@@ -48,12 +48,23 @@ AC_DEFUN([AC_ARG_WITH_DESERT],[
                 fi
 
                 for dir in         \
+                    application/uwcbr \
                     network/uwip \
-                    transport/uwudp 
+                    transport/uwudp \
+                    mobility/uwsmposition 
                 do
                     echo "considering dir \"$dir\""
                     DESERT_CPPFLAGS="$DESERT_CPPFLAGS -I${DESERT_PATH}/${dir}"
                     DESERT_LDFLAGS="$DESERT_LDFLAGS -L${DESERT_PATH}/${dir}"
+                done
+
+                for lib in \
+                    uwcbr \
+                    uwip \
+                    uwudp \
+                    uwsmposition 
+                do
+                    DESERT_LIBADD="$DESERT_LIBADD -l${lib}"
                 done
 
                 DESERT_DISTCHECK_CONFIGURE_FLAGS="--with-desert=$withval"
@@ -74,6 +85,33 @@ AC_DEFUN([AC_ARG_WITH_DESERT_BUILD],[
 
     DESERT_PATH_BUILD=''
     DESERT_LDFLAGS_BUILD=''
+
+    AC_ARG_WITH([desert-build],
+        [AS_HELP_STRING([--with-desert-build=<directory>],
+                [use desert installation in <directory>])],
+        [
+            if test "x$withval" != "xno" ; then
+                if test -d $withval ; then
+                    DESERT_PATH_BUILD="${withval}"
+                    if test ! -d "${DESERT_PATH_BUILD}" ; then
+                        AC_MSG_ERROR([could not find ${withval}, is --with-desert-build=${withval} correct?])
+                    fi
+
+                    for dir in         \
+                        application/uwcbr \
+                        network/uwip \
+                        transport/uwudp \
+                        mobility/uwsmposition 
+                    do
+                        echo "considering dir \"$dir\""
+                        DESERT_LDFLAGS_BUILD="$DESERT_LDFLAGS_BUILD -L${DESERT_PATH_BUILD}/${dir}"
+                    done
+
+                else
+                    AC_MSG_ERROR([desert path $withval is not a directory])
+                fi
+            fi
+        ])
 
     #AC_SUBST(DESERT_CPPFLAGS)
     AC_SUBST(DESERT_LDFLAGS_BUILD)
