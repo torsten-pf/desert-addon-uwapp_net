@@ -126,10 +126,10 @@ build_DESERT_addon() {
             exit 1
         fi
 
-        info_L2 "patch      [${2}]"
-        (
-            cat "${UNPACKED_FOLDER}/${PATCHES_DIR}/001-desert-2.0.0-addon-libtool-no-verbose.patch" | patch -p1 >> "${currentBuildLog}/DESERT_ADDON/${1}-${2}.log"  2>&1
-        )
+        #info_L2 "patch      [${2}]"
+        #(
+        #    cat "${UNPACKED_FOLDER}/${PATCHES_DIR}/001-desert-2.0.0-addon-libtool-no-verbose.patch" | patch -p1 >> "${currentBuildLog}/DESERT_ADDON/${1}-${2}.log"  2>&1
+        #)
 
         info_L2 "make       [${2}]"
         make >> "${currentBuildLog}/DESERT_ADDON/${1}-${2}.log"  2>&1
